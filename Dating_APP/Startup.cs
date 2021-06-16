@@ -29,6 +29,7 @@ namespace Dating_APP
 				options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
 			});
 			services.AddControllersWithViews();
+			services.AddCors();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +45,8 @@ namespace Dating_APP
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
+			app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
