@@ -1,5 +1,6 @@
 ﻿using Dating_APP.Data;
 using Dating_APP.Dtos;
+using Dating_APP.Interfaces;
 using Dating_APP.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,16 @@ namespace Dating_APP.Controllers.API
 	public class AccountController : BaseApiController
 	{
 		private readonly DataContext _context;
-		public AccountController(DataContext context)
+		private readonly ITokenService _token;
+
+		public AccountController(DataContext context, ITokenService token)
 		{
 			_context = context;
+			_token = token;
 		}
 
 		[HttpPost("register")]
-		public async Task<ActionResult<AppUser>> Register(RegisterDto register)
+		public async Task<ActionResult<UserDto>> Register(RegisterDto register)
 		{
 			if (await UserExits(register.Username)) return BadRequest("Username is taken");
 
@@ -37,12 +41,15 @@ namespace Dating_APP.Controllers.API
 			_context.Users.Add(user);
 			await _context.SaveChangesAsync();
 
-			return user;
+			return new UserDto {
+				Username = user.UserName,
+				Token = _token.CreateToken(user)
+			};
 		}
 
 		[HttpPost("login")]
 
-		public async Task<ActionResult<AppUser>> Login(LoginDto login)
+		public async Task<ActionResult<UserDto>> Login(LoginDto login)
 		{
 			var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == login.Username);
 			if (user == null) return Unauthorized("Invalid Username");
@@ -55,7 +62,11 @@ namespace Dating_APP.Controllers.API
 			{
 				if (computedhash[i] != user.PasswordHash[i]) return Unauthorized("Invalid Passowrd"); // If Password hash doesn't match
 			}
-			return user;
+			return new UserDto
+			{
+				Username = user.UserName,
+				Token = _token.CreateToken(user)
+			};
 		}
 
 		private async Task<bool> UserExits(string username)
