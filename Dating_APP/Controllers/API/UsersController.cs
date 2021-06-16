@@ -1,5 +1,6 @@
 ﻿using Dating_APP.Data;
 using Dating_APP.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ namespace Dating_APP.Controllers.API
 		}
 
 		//api/users/3
+		[Authorize]
 		[HttpGet("{id}")]
 		public async Task<ActionResult<AppUser>> GetUsers(int id)
 		{
