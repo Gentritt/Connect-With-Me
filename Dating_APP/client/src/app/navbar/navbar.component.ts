@@ -1,5 +1,7 @@
 import { error } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from '../modals/user';
 import { AccountService } from '../services/account.service';
 
 @Component({
@@ -8,22 +10,20 @@ import { AccountService } from '../services/account.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  model: any = {}
-  loggedIn: boolean | undefined;
-  constructor(private accountservice: AccountService) { }
+    model: any = {}
+    constructor(public accountservice: AccountService) { }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
   }
 
   login() {
     this.accountservice.login(this.model).subscribe(response => {
       console.log(response);
-      this.loggedIn = true;
     }, error => {
       console.log(error);
     })
   }
-  logout() {
-    this.loggedIn = false;
-  }
+    logout() {
+      this.accountservice.logout();
+    }
 }
