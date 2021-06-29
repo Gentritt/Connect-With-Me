@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="client\src\app\services\" />
     <Folder Include="client\ssl\" />
   </ItemGroup>
 
