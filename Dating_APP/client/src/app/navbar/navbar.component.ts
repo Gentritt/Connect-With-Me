@@ -1,3 +1,4 @@
+import { error } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../services/account.service';
 
@@ -18,6 +19,11 @@ export class NavbarComponent implements OnInit {
     this.accountservice.login(this.model).subscribe(response => {
       console.log(response);
       this.loggedIn = true;
+    }, error => {
+      console.log(error);
     })
+  }
+  logout() {
+    this.loggedIn = false;
   }
 }
