@@ -2,8 +2,6 @@ import { error } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
-import { User } from '../modals/user';
 import { AccountService } from '../services/account.service';
 
 @Component({
