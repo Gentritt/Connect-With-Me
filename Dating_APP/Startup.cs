@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dating_APP.Controllers.Errors;
 using Dating_APP.Data;
 using Dating_APP.Extensions;
 using Dating_APP.Interfaces;
@@ -41,16 +42,17 @@ namespace Dating_APP
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Home/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
-			}
+			//if (env.IsDevelopment())
+			//{
+			//	app.UseDeveloperExceptionPage();
+			//}
+			//else
+			//{
+			//	app.UseExceptionHandler("/Home/Error");
+			//	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+			//	app.UseHsts();
+			//}
+			app.UseMiddleware<ExceptionMiddleware>();
 
 			app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
 			app.UseHttpsRedirection();
