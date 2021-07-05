@@ -16,7 +16,7 @@ namespace Dating_APP.Data
 		{
 			if (await context.Users.AnyAsync()) return;
 
-			var userData = await System.IO.File.ReadAllTextAsync("Data/userSeedData.jso  n");
+			var userData = await System.IO.File.ReadAllTextAsync("Data/userSeedData.json");
 			var users = JsonSerializer.Deserialize<List<AppUser>>(userData);
 			foreach (var item in users)
 			{

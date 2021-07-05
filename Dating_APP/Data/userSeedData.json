@@ -13,8 +13,8 @@
 		"Country": "Singapore",
 		"Photos": [
 			{
-				"url": "https://randomuser.me/api/portraits/women/33.jpg",
-				"isMain": true
+				"Url": "https://randomuser.me/api/portraits/women/33.jpg",
+				"IsMain": true
 			}
 		]
 	},
@@ -32,8 +32,8 @@
 		"Country": "Somalia",
 		"Photos": [
 			{
-				"url": "https://randomuser.me/api/portraits/women/18.jpg",
-				"isMain": true
+				"Url": "https://randomuser.me/api/portraits/women/18.jpg",
+				"IsMain": true
 			}
 		]
 	},
@@ -51,8 +51,8 @@
 		"Country": "Niue",
 		"Photos": [
 			{
-				"url": "https://randomuser.me/api/portraits/women/79.jpg",
-				"isMain": true
+				"Url": "https://randomuser.me/api/portraits/women/79.jpg",
+				"IsMain": true
 			}
 		]
 	},
@@ -70,8 +70,8 @@
 		"Country": "Norway",
 		"Photos": [
 			{
-				"url": "https://randomuser.me/api/portraits/women/99.jpg",
-				"isMain": true
+				"Url": "https://randomuser.me/api/portraits/women/99.jpg",
+				"IsMain": true
 			}
 		]
 	},
@@ -89,8 +89,8 @@
 		"Country": "Syria",
 		"Photos": [
 			{
-				"url": "https://randomuser.me/api/portraits/women/44.jpg",
-				"isMain": true
+				"Url": "https://randomuser.me/api/portraits/women/44.jpg",
+				"IsMain": true
 			}
 		]
 	},
@@ -108,8 +108,8 @@
 			"Country": "Saint Lucia",
 			"Photos": [
 				{
-					"url": "https://randomuser.me/api/portraits/men/23.jpg",
-					"isMain": true
+					"Url": "https://randomuser.me/api/portraits/men/23.jpg",
+					"IsMain": true
 				}
 			]
 		},
@@ -127,8 +127,8 @@
 			"Country": "Seychelles",
 			"Photos": [
 				{
-					"url": "https://randomuser.me/api/portraits/men/11.jpg",
-					"isMain": true
+					"Url": "https://randomuser.me/api/portraits/men/11.jpg",
+					"IsMain": true
 				}
 			]
 		},
@@ -146,8 +146,8 @@
 			"Country": "Chile",
 			"Photos": [
 				{
-					"url": "https://randomuser.me/api/portraits/men/15.jpg",
-					"isMain": true
+					"Url": "https://randomuser.me/api/portraits/men/15.jpg",
+					"IsMain": true
 				}
 			]
 		},
@@ -165,8 +165,8 @@
 			"Country": "Belarus",
 			"Photos": [
 				{
-					"url": "https://randomuser.me/api/portraits/men/24.jpg",
-					"isMain": true
+					"Url": "https://randomuser.me/api/portraits/men/24.jpg",
+					"IsMain": true
 				}
 			]
 		},
@@ -184,8 +184,8 @@
 			"Country": "Nepal",
 			"Photos": [
 				{
-					"url": "https://randomuser.me/api/portraits/men/70.jpg",
-					"isMain": true
+					"Url": "https://randomuser.me/api/portraits/men/70.jpg",
+					"IsMain": true
 				}
 			]
 		}
