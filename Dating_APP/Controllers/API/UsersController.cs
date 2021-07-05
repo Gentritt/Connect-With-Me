@@ -12,9 +12,8 @@ using System.Threading.Tasks;
 
 namespace Dating_APP.Controllers.API
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class UsersController : ControllerBase
+	[Authorize]
+	public class UsersController : BaseApiController
 	{
 		private readonly DataContext _context;
 
@@ -31,7 +30,6 @@ namespace Dating_APP.Controllers.API
 		}
 
 		//api/users/3
-		[Authorize]
 		[HttpGet("{id}")]
 		public async Task<ActionResult<AppUser>> GetUsers(int id)
 		{

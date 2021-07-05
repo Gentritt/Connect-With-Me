@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dating_APP.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Dating_APP.Models
 		public DateTime DateOfBirth { get; set; }
 		public string KnownAs { get; set; }
 		public DateTime Created { get; set; } = DateTime.Now;
-		public DateTime LastActive { get; set; } = DateTime.Now;
+		public DateTime LastActive { get; set; } = DateTime.Now; 
 		public string Gender { get; set; }
 		public string Introduction { get; set; }
 		public string LookingFor { get; set; }
@@ -23,7 +24,10 @@ namespace Dating_APP.Models
 		public string Country { get; set; }
 		public ICollection<Photo> Photos { get; set; }
  
-
+		public int GetAge()
+		{
+			return DateOfBirth.CalculateAge();
+		}
 
 
 	}
