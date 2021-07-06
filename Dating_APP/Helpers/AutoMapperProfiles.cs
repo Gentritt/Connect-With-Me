@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Dating_APP.Dtos;
+using Dating_APP.Extensions;
 using Dating_APP.Models;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Dating_APP.Helpers
 				.ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom
 				(src => src.Photos.FirstOrDefault
 				(x => x.IsMain).Url))
-				; //from app user to memberdto mapping
+				.ForMember(dest=> dest.Age, opt=> opt.MapFrom(src=> src.DateOfBirth.CalculateAge())); //from app user to memberdto mapping
 			CreateMap<Photo, PhotoDto>();
 		}
 	}

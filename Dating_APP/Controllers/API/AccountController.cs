@@ -2,6 +2,7 @@
 using Dating_APP.Dtos;
 using Dating_APP.Interfaces;
 using Dating_APP.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +14,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Dating_APP.Controllers.API
-{
+{   
 	public class AccountController : BaseApiController
 	{
 		private readonly DataContext _context;
 		private readonly ITokenService _token;
-
+		
 		public AccountController(DataContext context, ITokenService token)
 		{
 			_context = context;
@@ -46,9 +47,7 @@ namespace Dating_APP.Controllers.API
 				Token = _token.CreateToken(user)
 			};
 		}
-
 		[HttpPost("login")]
-
 		public async Task<ActionResult<UserDto>> Login(LoginDto login)
 		{
 			var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == login.Username);
