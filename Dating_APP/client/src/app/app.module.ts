@@ -21,7 +21,7 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
-
+import { TabsModule } from 'ngx-bootstrap/tabs';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +46,8 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
     BsDropdownModule.forRoot(),
       ToastrModule.forRoot({
           positionClass:'toast-bottom-right'
-      })
+      }),
+    TabsModule.forRoot() 
 
   ],
   providers: [{
