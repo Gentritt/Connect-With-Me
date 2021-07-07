@@ -22,6 +22,7 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +37,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     NotFoundComponent,
     ServerErrorComponent,
     MemberCardComponent,
+
   ],
   imports: [ 
     BrowserModule,
@@ -47,7 +49,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
       ToastrModule.forRoot({
           positionClass:'toast-bottom-right'
       }),
-    TabsModule.forRoot() 
+    TabsModule.forRoot(),
+    NgxGalleryModule
 
   ],
   providers: [{
