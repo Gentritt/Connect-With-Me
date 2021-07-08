@@ -38,7 +38,7 @@ namespace Dating_APP.Controllers.API
 		}
 
 		//api/users/3
-		[HttpGet("{username}")]
+		[HttpGet("{username}", Name = "GetUser")]
 		public async Task<ActionResult<MemberDto>> GetUser(string username)
 		{
 			return await _userRepository.GetMemberAsync(username);
@@ -85,7 +85,11 @@ namespace Dating_APP.Controllers.API
 			user.Photos.Add(photo);
 
 			if (await _userRepository.SaveAllAsync())
-				return _mapper.Map<Photo, PhotoDto>(photo);
+			{
+				//return _mapper.Map<Photo, PhotoDto>(photo);
+				return CreatedAtRoute("GetUser", new {username = user.UserName } ,_mapper.Map<Photo, PhotoDto>(photo));
+			}
+				
 
 			return BadRequest("Problem adding a photo");
 		}
