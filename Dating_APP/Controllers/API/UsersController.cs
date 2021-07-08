@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dating_APP.Data;
 using Dating_APP.Dtos;
+using Dating_APP.Helpers;
 using Dating_APP.Interfaces;
 using Dating_APP.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,10 +22,12 @@ namespace Dating_APP.Controllers.API
 	{
 		private readonly IUserRepository _userRepository;
 		private readonly IMapper _mapper;
-		public UsersController(IUserRepository userRepository, IMapper mapper)
+		private readonly IPhotoService _photoService;
+		public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
 		{
 			_userRepository = userRepository;
 			_mapper = mapper;
+			_photoService = photoService;
 		}
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
@@ -46,7 +49,7 @@ namespace Dating_APP.Controllers.API
 
 		public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
 		{
-			var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			var username = User.GetUsername();
 			var user = await _userRepository.GetUserByUsernameAsync(username);
 
 			_mapper.Map(memberUpdateDto, user);
@@ -55,6 +58,36 @@ namespace Dating_APP.Controllers.API
 
 			if (await _userRepository.SaveAllAsync()) return NoContent();
 			return BadRequest("Failed to update User");
+		}
+
+		[HttpPost("add-photo")]
+		
+		public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
+		{
+			var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername()); // Getting the user
+
+			var result = await _photoService.AddPhotoAsync(file);  // Getting the result back from photoService
+
+			if (result.Error != null) return BadRequest(result.Error.Message);
+
+			var photo = new Photo
+			{
+				Url = result.SecureUrl.AbsoluteUri,
+				PublicId = result.PublicId
+			}; // Create a new Photo
+
+			if(user.Photos.Count  == 0) //Checking if user has any photos if the photo is set to isMain
+			{
+				photo.IsMain = true;
+
+			}
+
+			user.Photos.Add(photo);
+
+			if (await _userRepository.SaveAllAsync())
+				return _mapper.Map<Photo, PhotoDto>(photo);
+
+			return BadRequest("Problem adding a photo");
 		}
 	}
 }
