@@ -20,11 +20,11 @@
     </li>-->
 
     </ul>
-    <ul>
+    <!--<ul>
       <li class="nav-item">
         <a class="nav-link" routerLink="/errors" routerLinkActive='active'>Errors</a>
       </li>
-    </ul>
+    </ul>-->
     <div class="dropdown" *ngIf="(accountservice.currentUser$ | async) as user" dropdown>
       <a class="dropdown-toggle text-light " dropdownToggle>Welcome {{user.username | titlecase}}</a>
       <div class="dropdown-menu mt-3" *dropdownMenu>
