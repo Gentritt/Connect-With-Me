@@ -1,14 +1,57 @@
 <form [formGroup]='registerForm' (ngSubmit)="register()" autocomplete="off">
   <h2 class="text-center text-primary">Sign Up</h2>
   <hr />
+
   <div class="form-group">
-    <input
-           [class.is-invalid]='registerForm.get("username").errors && registerForm.get("username").touched'
+    <label class="control-label" style="margin-right: 10px">I am: </label>
+    <label class="radio-inline">
+      <input type="radio" value="male" formControlName='gender' />
+      Male
+    </label>
+    <label class="radio-inline">
+      <input type="radio" value="female" formControlName='gender' class="ml-3" />
+      Female
+    </label>
+  </div>
+  <div class="form-group">
+    <input [class.is-invalid]='registerForm.get("username").errors && registerForm.get("username").touched'
            type="text"
            class="form-control"
            formControlName='username'
            placeholder="Username" />
-     <div class="invalid-feedback">Please enter a username</div>
+    <div class="invalid-feedback">Please enter a username</div>
+  </div>
+  <div class="form-group">
+    <input [class.is-invalid]='registerForm.get("knownAs").errors && registerForm.get("knownAs").touched'
+           type="text"
+           class="form-control"
+           formControlName='knownAs'
+           placeholder="KnownAs" />
+    <div class="invalid-feedback">Please enter a nickname</div>
+  </div>
+  <div class="form-group">
+    <input [class.is-invalid]='registerForm.get("dateOfBirth").errors && registerForm.get("dateOfBirth").touched'
+           type="text"
+           class="form-control"
+           formControlName='dateOfBirth'
+           placeholder="Birthday" />
+    <div class="invalid-feedback">Please enter a birthdate</div>
+  </div>
+  <div class="form-group">
+    <input [class.is-invalid]='registerForm.get("city").errors && registerForm.get("city").touched'
+           type="text"
+           class="form-control"
+           formControlName='city'
+           placeholder="City" />
+    <div class="invalid-feedback">Please enter a City</div>
+  </div>
+  <div class="form-group">
+    <input [class.is-invalid]='registerForm.get("country").errors && registerForm.get("country").touched'
+           type="text"
+           class="form-control"
+           formControlName='country'
+           placeholder="Country" />
+    <div class="invalid-feedback">Please enter a Country</div>
   </div>
 
   <div class="form-group">
@@ -22,7 +65,7 @@
     <div *ngIf="registerForm.get('password').hasError('minlength')"
          class="invalid-feedback">Please enter at least 4 characters</div>
     <div *ngIf="registerForm.get('password').hasError('maxlength')"
-         class="invalid-feedback">Please enter do not enter more than 8 characters</div>
+         class="invalid-feedback">Please do not enter more than 8 characters</div>
   </div>
 
   <div class="form-group">
