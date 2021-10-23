@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dating_APP.Data;
 using Dating_APP.Dtos;
+using Dating_APP.Extensions;
 using Dating_APP.Helpers;
 using Dating_APP.Interfaces;
 using Dating_APP.Models;
@@ -30,9 +31,16 @@ namespace Dating_APP.Controllers.API
 			_photoService = photoService;
 		}
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+		public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
 		{
-			var users = await _userRepository.GetMembersAsync();
+			var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+			userParams.CurrentUsername = user.UserName;
+			if (string.IsNullOrEmpty(userParams.Gender))
+				userParams.Gender = user.Gender == "male" ? "female" : "male";
+
+			var users = await _userRepository.GetMembersAsync(userParams);
+
+			Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
 			return Ok (users);
 
 		}

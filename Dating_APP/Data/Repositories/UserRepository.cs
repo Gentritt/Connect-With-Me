@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Dating_APP.Dtos;
+using Dating_APP.Helpers;
 using Dating_APP.Interfaces;
 using Dating_APP.Models;
 using Microsoft.EntityFrameworkCore;
@@ -28,11 +29,15 @@ namespace Dating_APP.Data.Repositories
 				.ProjectTo<MemberDto>(mapper.ConfigurationProvider).SingleOrDefaultAsync();
 		}
 
-		public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+		public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
 		{
-			return await _context.Users
-				.ProjectTo<MemberDto>(mapper.ConfigurationProvider)
-				.ToListAsync();
+			var query = _context.Users.AsQueryable();
+
+			query = query.Where(u => u.UserName != userParams.CurrentUsername);
+			query = query.Where(u => u.Gender == userParams.Gender);
+			return await PagedList<MemberDto>.CreateAsync
+				(query.ProjectTo<MemberDto>(mapper.ConfigurationProvider).AsNoTracking(), 
+				userParams.PageNumber, userParams.PageSize);
 		}
 
 		public async Task<AppUser> GetUserByIdAsync(int id)
