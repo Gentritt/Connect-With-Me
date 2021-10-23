@@ -51,13 +51,18 @@ namespace Dating_APP.Controllers.API
 				Username = user.UserName,
 				Token = _token.CreateToken(user),
 				KnownAs = user.KnownAs,
+				Gender = user.Gender
 
 			};
 		}
 		[HttpPost("login")] //test
 		public async Task<ActionResult<UserDto>> Login(LoginDto login)
 		{
-			var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == login.Username);
+			var user = await _context.Users
+				.Include(p=> p.Photos)
+				.SingleOrDefaultAsync
+				(x => x.UserName == login.Username);
+
 			if (user == null) return Unauthorized("Invalid Username");
 
 			using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -73,7 +78,8 @@ namespace Dating_APP.Controllers.API
 				Username = user.UserName,
 				Token = _token.CreateToken(user),
 				KnownAs = user.KnownAs,
-				//PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+				PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+				Gender = user.Gender
 			};
 		}
 
