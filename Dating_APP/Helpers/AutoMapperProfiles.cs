@@ -19,7 +19,8 @@ namespace Dating_APP.Helpers
 				(x => x.IsMain).Url))
 				.ForMember(dest=> dest.Age, opt=> opt.MapFrom(src=> src.DateOfBirth.CalculateAge())); //from app user to memberdto mapping
 			CreateMap<Photo, PhotoDto>();
-			CreateMap<MemberUpdateDto,AppUser>(); 
+			CreateMap<MemberUpdateDto,AppUser>();
+			CreateMap<RegisterDto, AppUser>();
 		}
 	}
 }

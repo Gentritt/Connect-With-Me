@@ -1,4 +1,5 @@
-﻿using Dating_APP.Data;
+﻿using AutoMapper;
+using Dating_APP.Data;
 using Dating_APP.Dtos;
 using Dating_APP.Interfaces;
 using Dating_APP.Models;
@@ -19,32 +20,38 @@ namespace Dating_APP.Controllers.API
 	{
 		private readonly DataContext _context;
 		private readonly ITokenService _token;
-		
-		public AccountController(DataContext context, ITokenService token)
+		private readonly IMapper _mapper;
+		public AccountController(DataContext context, ITokenService token, IMapper mapper)
 		{
 			_context = context;
 			_token = token;
+			_mapper = mapper;
+
+
 		}
 
 		[HttpPost("register")]
 		public async Task<ActionResult<UserDto>> Register(RegisterDto register)
 		{
 			if (await UserExits(register.Username)) return BadRequest("Username is taken");
+			var user = _mapper.Map<AppUser>(register);
 
 			using var hmac = new HMACSHA512();
 
-			var user = new AppUser
-			{
-				UserName = register.Username.ToLower(),
-				PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(register.Password)),
-				PasswordSalt = hmac.Key
-			};
+			user.UserName = register.Username.ToLower();
+				user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(register.Password));
+				user.PasswordSalt = hmac.Key;
+			
+			
+			
 			_context.Users.Add(user);
 			await _context.SaveChangesAsync();
 
 			return new UserDto {
 				Username = user.UserName,
-				Token = _token.CreateToken(user)
+				Token = _token.CreateToken(user),
+				KnownAs = user.KnownAs,
+
 			};
 		}
 		[HttpPost("login")] //test
@@ -64,7 +71,9 @@ namespace Dating_APP.Controllers.API
 			return new UserDto
 			{
 				Username = user.UserName,
-				Token = _token.CreateToken(user)
+				Token = _token.CreateToken(user),
+				KnownAs = user.KnownAs,
+				PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
 			};
 		}
 

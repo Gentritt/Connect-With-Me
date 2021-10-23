@@ -28,6 +28,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { PhotoEditComponent } from './members/photo-edit/photo-edit.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { DateInputComponent } from './forms/date-input/date-input.component';
+import { TextInputComponent } from './forms/text-input/text-input.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,6 +47,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     MemberCardComponent,
     MemberEditComponent,
     PhotoEditComponent,
+    DateInputComponent,
+    TextInputComponent,
 
 
   ],
@@ -61,7 +66,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     NgxGalleryModule,
     NgxSpinnerModule,
     FileUploadModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BsDatepickerModule.forRoot()
 
   ],
   providers: [{

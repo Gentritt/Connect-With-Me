@@ -27,6 +27,7 @@
   <ItemGroup>
     <Folder Include="client\src\app\guards\" />
     <Folder Include="client\src\app\errors\" />
+    <Folder Include="client\src\app\forms\" />
     <Folder Include="client\src\app\services\" />
     <Folder Include="client\ssl\" />
   </ItemGroup>
