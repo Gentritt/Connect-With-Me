@@ -4,6 +4,7 @@ import { take } from 'rxjs/operators';
 import { Member } from '../../models/member';
 import { User } from '../../models/user';
 import { AccountService } from '../../services/account.service';
+import { MembersService } from '../../services/members.service';
 
 @Component({
   selector: 'app-photo-edit',
@@ -18,7 +19,7 @@ export class PhotoEditComponent implements OnInit {
   baseUrl = 'https://localhost:44361/api/';
   user!: User;
 
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AccountService, private memberService: MembersService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
   }
 
@@ -28,6 +29,13 @@ export class PhotoEditComponent implements OnInit {
 
   fileOverBase(e: any) {
     this.hasBaseDropZoneOver = e;
+  }
+
+  deletePhoto(photoId: number) {
+    this.memberService.deletePhoto(photoId).subscribe(() => {
+
+      this.member.photos = this.member.photos.filter(x => x.id !== photoId);
+    })
   }
 
   initializeUploader() {
@@ -48,6 +56,11 @@ export class PhotoEditComponent implements OnInit {
       if (response) {
         const photo = JSON.parse(response);
         this.member.photos.push(photo);
+        if (photo.isMain) {
+          this.user.photoUrl = photo.url;
+          this.member.photoUrl = photo.url;
+          this.accountService.setCurrentUser(this.user);
+        }
       }
     }
   }

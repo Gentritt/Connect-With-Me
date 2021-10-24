@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Dating_APP.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace Dating_APP.Controllers.API
 {
+	[ServiceFilter(typeof(LogUserActivity))]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class BaseApiController : ControllerBase
 	{
+
 	}
 }

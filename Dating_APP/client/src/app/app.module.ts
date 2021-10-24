@@ -32,6 +32,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { DateInputComponent } from './forms/date-input/date-input.component';
 import { TextInputComponent } from './forms/text-input/text-input.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,7 +70,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     FileUploadModule,
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
+    ButtonsModule.forRoot()
 
   ],
   providers: [{
