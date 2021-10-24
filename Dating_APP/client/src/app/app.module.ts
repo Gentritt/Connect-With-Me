@@ -33,6 +33,7 @@ import { DateInputComponent } from './forms/date-input/date-input.component';
 import { TextInputComponent } from './forms/text-input/text-input.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { TimeagoModule } from 'ngx-timeago';
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,7 +72,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    TimeagoModule.forRoot()
 
   ],
   providers: [{
