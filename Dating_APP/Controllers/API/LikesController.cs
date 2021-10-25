@@ -1,4 +1,5 @@
 ﻿using Dating_APP.Dtos;
+using Dating_APP.Extensions;
 using Dating_APP.Helpers;
 using Dating_APP.Interfaces;
 using Dating_APP.Models;
@@ -60,7 +61,8 @@ namespace Dating_APP.Controllers.API
 
 		public async Task<ActionResult<IEnumerable<LikeDto>>> GetUserLikes(string predicate)
 		{
-			var users =  await _likesRepository.GetUserLikes(predicate, User.GetUserId());
+		
+			var users =  await _likesRepository.GetUserLikes(predicate,User.GetUserId());
 			return Ok(users);
 		} 
 

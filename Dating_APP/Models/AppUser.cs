@@ -1,4 +1,5 @@
 ﻿using Dating_APP.Extensions;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,9 @@ namespace Dating_APP.Models
 
 		public ICollection<UserLike> LikedByUsers { get; set; } //likeby
 		public ICollection<UserLike> LikedUsers { get; set; } //users that currently user has liked
+
+		public ICollection<Message> MessagesSent { get; set; }
+		public ICollection<Message> MessagesRecieved { get; set; }
 
 
 

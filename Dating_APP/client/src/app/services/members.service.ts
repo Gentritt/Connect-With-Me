@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Member } from '../models/member';
 import { PaginatedResult } from '../models/pagination';
 import { UserParams } from '../models/userParams';
+import { getPaginationHeaders } from './paginationHelper';
 
 
 
@@ -20,14 +21,14 @@ export class MembersService {
 
   getMembers(userParams: UserParams) {
 
-    let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
+    let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
     params = params.append('gender', userParams.gender);
     params = params.append('orderBy', userParams.orderBy);
     return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params);
   
   }
 
-  private getPaginatedResult<T>(url: any, params: any) {
+   getPaginatedResult<T>(url: any, params: any) {
     const paginatedResult: PaginatedResult < T > = new PaginatedResult<T>();
     return this.http.get<T>(url,{ observe: 'response', params }).pipe(
       map(response => {
@@ -44,15 +45,15 @@ export class MembersService {
   }
 
 
-  private getPaginationHeaders(pageNumber: number, pageSize: number) {
-    let params = new HttpParams();
+  // getPaginationHeaders(pageNumber, pageSize) {
+  //  let params = new HttpParams();
 
 
-    params = params.append('pageNumber', pageNumber.toString());
-    params = params.append('pageSize', pageSize.toString());
+  //   params = params.append('pageNumber', pageNumber.toString());
+  //   params = params.append('pageSize', pageSize.toString());
 
-    return params;
-  }
+  //  return params;
+  //}
 
   getMember(username: string) {
     const member = this.members.find(x => x.username === username);
@@ -81,7 +82,8 @@ export class MembersService {
   }
 
   getLikes(predicate: string) {
-    return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate=' + predicate)
+
+    return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate=' + predicate);
 
   }
 

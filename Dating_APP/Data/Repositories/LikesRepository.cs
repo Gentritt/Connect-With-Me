@@ -1,5 +1,6 @@
 ﻿using Dating_APP.Dtos;
 using Dating_APP.Extensions;
+using Dating_APP.Helpers;
 using Dating_APP.Interfaces;
 using Dating_APP.Models;
 using Microsoft.EntityFrameworkCore;
@@ -22,19 +23,19 @@ namespace Dating_APP.Data.Repositories
 			return await _context.Likes.FindAsync(sourceUserId, likedUserId);
 		}
 
-		public async Task<IEnumerable<LikeDto>> GetUserLikes(string predicate, int UserId)
+		public async Task<IEnumerable<LikeDto>> GetUserLikes(string predicate,int userId)
 		{
 			var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
 			var likes = _context.Likes.AsQueryable();
 
 			if (predicate == "liked")
 			{
-				likes = likes.Where(like => like.SourceUserId == UserId);
+				likes = likes.Where(like => like.SourceUserId == userId);
 				users = likes.Select(like => like.LikedUser); //users from our likes table
 			}
 			if (predicate == "likedBy")
 			{
-				likes = likes.Where(like => like.LikeUserId == UserId);
+				likes = likes.Where(like => like.LikeUserId == userId);
 				users = likes.Select(like => like.SourceUser); //gives the lists of users that liked the current login user
 			}
 
@@ -47,6 +48,8 @@ namespace Dating_APP.Data.Repositories
 				City = user.City,
 				Id = user.Id
 			}).ToListAsync();
+
+			
 		}
 
 		public async Task<AppUser> GetUsersWithLikes(int userId)
