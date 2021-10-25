@@ -8,15 +8,18 @@ namespace Dating_APP.Helpers
 {
 	public static class ClaimsUsername
 	{
-		public static string GetUsername( this ClaimsPrincipal user)
+		public static string GetUsername(this ClaimsPrincipal user)
 		{
 			return user.FindFirst(ClaimTypes.Name)?.Value;
-
 		}
 		public static int GetUserId(this ClaimsPrincipal user)
 		{
-			return int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+			if (user == null)
+				throw new ArgumentNullException(nameof(user));
 
+			var claim = user.FindFirst(ClaimTypes.NameIdentifier);
+			return int.Parse(claim != null ? claim.Value : null);
 		}
+
 	}
 }
