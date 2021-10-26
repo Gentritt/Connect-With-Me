@@ -4,6 +4,7 @@ using Dating_APP.Dtos;
 using Dating_APP.Helpers;
 using Dating_APP.Interfaces;
 using Dating_APP.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace Dating_APP.Data.Repositories
 			return await _context.Messages.FindAsync(id);
 		}
 
-		public async Task<PagedList<MessageDto>> GetMessagesForUser(MessageParams messageParams)
+		public async Task<IEnumerable<MessageDto>> GetMessagesForUser(MessageParams messageParams)
 		{
 			var query = _context.Messages.OrderByDescending(m => m.MessageSent)
 				.AsQueryable();
@@ -50,8 +51,24 @@ namespace Dating_APP.Data.Repositories
 			};
 
 			var messages = query.ProjectTo<MessageDto>(mapper.ConfigurationProvider);
-			return await PagedList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
+			return await messages.ToListAsync();
 
+		}
+
+		public async Task<IEnumerable<MessageDto>> GetMessagesForUserTest(string container="Unread", string Username = null)
+		{
+			var query = _context.Messages.OrderByDescending(m => m.MessageSent)
+					.AsQueryable();
+
+			query = container switch
+			{
+				"Inbox" => query.Where(u => u.Recipient.UserName == Username),
+				"Outbox" => query.Where(u => u.Sender.UserName ==Username),
+				_ => query.Where(u => u.Recipient.UserName == Username && u.DateRead == null)
+			};
+
+			var messages = query.ProjectTo<MessageDto>(mapper.ConfigurationProvider);
+			return await messages.ToListAsync();
 		}
 
 		public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientUserName)

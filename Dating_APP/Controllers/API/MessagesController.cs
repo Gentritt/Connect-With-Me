@@ -59,18 +59,32 @@ namespace Dating_APP.Controllers.API
 
 
 		}
+		//[HttpGet]
+
+		//public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessagesForUser([FromQuery] MessageParams messageParams)
+		//{
+		//	messageParams.Username = User.GetUsername();
+		//	var messages = await messageRepository.GetMessagesForUser(messageParams);
+
+		//	/*Response.AddPaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages)*/;
+
+		//	return Ok(messages);
+
+		//}
+
 		[HttpGet]
-
-		public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessagesForUser([FromQuery] MessageParams messageParams)
+		public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessagesForUserTest(string container = "Unread", string Username = null)
 		{
-			messageParams.Username = User.GetUsername();
-			var messages = await messageRepository.GetMessagesForUser(messageParams);
+			Username = User.GetUsername();
+			var messages = await messageRepository.GetMessagesForUserTest(container,Username);
 
-			Response.AddPaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages);
 
-			return messages;
+			return Ok(messages);
 
 		}
+
+
+
 		[HttpGet("thread/{username}")]
 
 		public async Task <ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username)
