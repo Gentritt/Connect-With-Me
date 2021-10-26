@@ -17,4 +17,8 @@ export class MessageService {
   getMessages(container: string){
     return this.http.get<Partial<Message[]>>(this.baseUrl + 'messages?container=' + container);
   }
+
+  getMessageThread(username:string){
+    return this.http.get<Message[]>(this.baseUrl + 'messages/thread/' + username);
+  }
 }

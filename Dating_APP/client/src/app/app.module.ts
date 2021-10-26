@@ -34,6 +34,7 @@ import { TextInputComponent } from './forms/text-input/text-input.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +53,7 @@ import { TimeagoModule } from 'ngx-timeago';
     PhotoEditComponent,
     DateInputComponent,
     TextInputComponent,
+    MemberMessagesComponent,
 
 
   ],
