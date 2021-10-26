@@ -1,5 +1,6 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using Dating_APP.Dtos;
+using Dating_APP.Extensions;
 using Dating_APP.Helpers;
 using Dating_APP.Interfaces;
 using Dating_APP.Models;
@@ -30,14 +31,14 @@ namespace Dating_APP.Controllers.API
 
 		public async Task<ActionResult<MessageDto>> CreateMessage(CreateMessageDto createMessageDto)
 		{
-			var username = User.GetUsername();
+			var username = User.GetUsername(); //gets username
 
 			if (username == createMessageDto.RecipientUsername.ToLower()) 
-				return BadRequest("Cant Sent messages to urself");
+				return BadRequest("Cant Sent messages to urself"); 
 
-			var sender = await userRepository.GetUserByUsernameAsync(username);
+			var sender = await userRepository.GetUserByUsernameAsync(username); //gets the username of sender
 
-			var recipient = await userRepository.GetUserByUsernameAsync(createMessageDto.RecipientUsername);
+			var recipient = await userRepository.GetUserByUsernameAsync(createMessageDto.RecipientUsername); //the recipient
 			if (recipient == null) return NotFound();
 
 			var message = new Message
@@ -58,5 +59,26 @@ namespace Dating_APP.Controllers.API
 
 
 		}
+		[HttpGet]
+
+		public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessagesForUser([FromQuery] MessageParams messageParams)
+		{
+			messageParams.Username = User.GetUsername();
+			var messages = await messageRepository.GetMessagesForUser(messageParams);
+
+			Response.AddPaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages);
+
+			return messages;
+
+		}
+		[HttpGet("thread/{username}")]
+
+		public async Task <ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username)
+		{
+			var currentUsername = User.GetUsername();
+
+			return Ok(await messageRepository.GetMessageThread(currentUsername, username));
+		}
+
 	}
 }
