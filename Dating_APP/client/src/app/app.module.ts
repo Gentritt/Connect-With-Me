@@ -39,6 +39,8 @@ import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { HasRoleDirective } from './_directives/has-role.directive';
 import { UserManagementComponent } from './admin/user-management/user-management.component';
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { RolesModalComponent } from './_modals/roles-modal/roles-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,6 +64,7 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
     HasRoleDirective,
     UserManagementComponent,
     PhotoManagementComponent,
+    RolesModalComponent,
 
 
   ],
@@ -83,8 +86,12 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
     ButtonsModule.forRoot(),
-    TimeagoModule.forRoot()
+    TimeagoModule.forRoot(),
+    ModalModule.forRoot()
 
+  ],
+  exports: [
+    ModalModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true
