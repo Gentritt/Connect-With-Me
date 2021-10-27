@@ -35,6 +35,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +55,7 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
     DateInputComponent,
     TextInputComponent,
     MemberMessagesComponent,
+    AdminPanelComponent,
 
 
   ],

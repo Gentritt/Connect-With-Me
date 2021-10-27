@@ -10,7 +10,7 @@ export class AccountService {
   baseUrl = 'https://localhost:44361/api/';
 
     private currentUserSource = new ReplaySubject<User>(1)
-  currentUser$ = this.currentUserSource.asObservable()
+    currentUser$ = this.currentUserSource.asObservable()
 
 
     constructor(private http: HttpClient) { }
@@ -39,10 +39,18 @@ export class AccountService {
         )
     }
     setCurrentUser(user: User) {
+      user.roles = [];
+      const roles = this.getDecodedToken(user.token).role;
+      Array.isArray(roles) ?  user.roles = roles : user.roles.push(roles);
         this.currentUserSource.next(user);
     }
   logout() {
       localStorage.removeItem('user') ;
       this.currentUserSource.next(null!);
+  }
+
+  getDecodedToken(token: any){
+    return JSON.parse(atob(token.split('.'  )[1]));
+    
   }
 }
