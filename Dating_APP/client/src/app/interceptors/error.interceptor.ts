@@ -38,7 +38,10 @@ export class ErrorInterceptor implements HttpInterceptor {
               }
               break;
             case 401:
-              this.toastr.error("Unauthorized", error.status)
+             
+              this.toastr.error("Please check your username or password", error.status, {
+                positionClass: 'toast-top-left'
+              });
               break;
 
             case 404:

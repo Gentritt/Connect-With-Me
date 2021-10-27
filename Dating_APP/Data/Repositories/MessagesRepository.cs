@@ -38,13 +38,13 @@ namespace Dating_APP.Data.Repositories
 			return await _context.Messages
 				.Include(u=> u.Sender)
 				.Include(u=> u.Recipient)
-				.SingleOrDefaultAsync(x=> x.Id == id);
+				.SingleOrDefaultAsync(x=> x.Id == id); //get message for a user based on {id}
 		}
 
 		public async Task<IEnumerable<MessageDto>> GetMessagesForUser(MessageParams messageParams)
 		{
 			var query = _context.Messages.OrderByDescending(m => m.MessageSent)
-				.AsQueryable();
+				.AsQueryable(); //returns the messages sent
 
 			query = messageParams.Container switch
 			{

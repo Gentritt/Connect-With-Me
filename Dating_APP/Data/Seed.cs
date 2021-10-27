@@ -20,10 +20,8 @@ namespace Dating_APP.Data
 			var users = JsonSerializer.Deserialize<List<AppUser>>(userData);
 			foreach (var item in users)
 			{
-				using var hmac = new HMACSHA512();
 				item.UserName = item.UserName.ToLower();
-				item.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("password"));
-				item.PasswordSalt = hmac.Key;
+
 				context.Users.Add(item);
 
 			}

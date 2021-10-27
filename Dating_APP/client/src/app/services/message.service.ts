@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Message } from '../models/message';
 import { MessageParams } from '../models/messageParams';
+import { User } from '../models/user';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 
 @Injectable({
