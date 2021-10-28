@@ -34,6 +34,7 @@ namespace Dating_APP.Data
 			}
 			foreach (var item in users)
 			{
+				item.Photos.First().IsApproved = true;
 				item.UserName = item.UserName.ToLower();
 
 				await userManager.CreateAsync(item, "Password");

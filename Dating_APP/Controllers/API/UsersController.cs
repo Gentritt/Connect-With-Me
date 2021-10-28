@@ -51,7 +51,8 @@ namespace Dating_APP.Controllers.API
 		[HttpGet("{username}", Name = "GetUser")]
 		public async Task<ActionResult<MemberDto>> GetUser(string username)
 		{
-			return await _userRepository.GetMemberAsync(username);
+			var currentUsername = User.GetUsername();
+			return await _userRepository.GetMemberAsync(username, isCurrentUser: currentUsername == username);
 			
 		}
 

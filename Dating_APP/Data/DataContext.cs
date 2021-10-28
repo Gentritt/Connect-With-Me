@@ -20,6 +20,7 @@ namespace Dating_APP.Data
 
 		public DbSet<UserLike> Likes { get; set; }
 		public DbSet<Message> Messages { get; set; }
+		public DbSet<Photo> Photos { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder) 
 		{
@@ -62,6 +63,8 @@ namespace Dating_APP.Data
 				.HasOne(u => u.Sender)
 				.WithMany(m => m.MessagesSent)
 				.OnDelete(DeleteBehavior.Restrict);
+			builder.Entity<Photo>()
+				.HasQueryFilter(p => p.IsApproved);
 		}
 	}
 }

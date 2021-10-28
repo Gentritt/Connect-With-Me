@@ -23,11 +23,20 @@ namespace Dating_APP.Data.Repositories
 			this.mapper = mapper;
 		}
 
-		public async Task<MemberDto> GetMemberAsync(string username)
+		public  async Task<MemberDto> GetMemberAsync(string username, bool isCurrentUser)
 		{
-			return await _context.Users.Where(x => x.UserName == username)
-				.ProjectTo<MemberDto>(mapper.ConfigurationProvider).SingleOrDefaultAsync();
+			var query = _context.Users.Where(x => x.UserName == username)
+				.ProjectTo<MemberDto>(mapper.ConfigurationProvider)
+				.AsQueryable();
+
+			if (isCurrentUser) query = query.IgnoreQueryFilters();
+
+			return await query.FirstOrDefaultAsync();
+
+
+
 		}
+
 
 		public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
 		{
@@ -50,6 +59,15 @@ namespace Dating_APP.Data.Repositories
 		public async Task<AppUser> GetUserByIdAsync(int id)
 		{
 			return await _context.Users.FindAsync(id);
+		}
+
+		public async Task<AppUser> GetUserByPhotoId(int PhotoId)
+		{
+			return await _context.Users
+				.Include(p => p.Photos)
+				.IgnoreQueryFilters()
+				.Where(p => p.Photos.Any(p => p.Id == PhotoId))
+				.FirstOrDefaultAsync();
 		}
 
 		public async Task<AppUser> GetUserByUsernameAsync(string username)

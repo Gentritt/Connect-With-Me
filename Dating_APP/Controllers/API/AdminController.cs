@@ -1,4 +1,7 @@
-﻿using Dating_APP.Models;
+﻿using Dating_APP.Data.Repositories;
+using Dating_APP.Interfaces;
+using Dating_APP.Models;
+using Dating_APP.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +16,16 @@ namespace Dating_APP.Controllers.API
 	public class AdminController : BaseApiController
 	{
 		private readonly UserManager<AppUser> userManager;
+		private readonly IPhotoRepository iphotoRepository;
+		private readonly IUserRepository iuserRepository;
+		private readonly IPhotoService photoService;
 
-		public AdminController(UserManager<AppUser> userManager)
+		public AdminController(UserManager<AppUser> userManager, IPhotoRepository photoRepository, IUserRepository userRepository, IPhotoService photoService)
 		{
 			this.userManager = userManager;
+			this.iphotoRepository = photoRepository;
+			this.iuserRepository = userRepository;
+			this.photoService = photoService;
 		}
 
 		[Authorize(Policy ="RequireAdminRole")]
@@ -60,12 +69,54 @@ namespace Dating_APP.Controllers.API
 
 		}
 
-		[Authorize(Policy = "RequirePhotoRole")]
+		[Authorize(Policy = "RequireAdminRole")]
 		[HttpGet("photos-to-moderate")]
 
-		public ActionResult GetPhotosForModeration()
+		public async Task<ActionResult> GetPhotosForModeration()
 		{
-			return Ok("Admins or moderators can see this");
+			var photos = await iphotoRepository.GetUnapprovedPhoto();
+			return Ok(photos);
+		}
+
+		[Authorize(Policy ="ModeratePhotoRole")]
+		[HttpPost("approve-photo/{photoId}")]
+
+		public async Task<ActionResult> ApprovePhoto(int PhotoId)
+		{
+			var photo = await iphotoRepository.GetPhotoById(PhotoId);
+
+			if (photo == null) return NotFound("Could not find photo");
+
+			photo.IsApproved = true;
+
+			var user = await iuserRepository.GetUserByPhotoId(PhotoId);
+			if (!user.Photos.Any(x => x.IsMain)) photo.IsMain = true;
+
+			return Ok();
+		}
+
+		[Authorize(Policy ="ModeratePhotoRole")]
+		[HttpPost("reject-photo/{photoId}")]
+		public async Task<ActionResult> RejectPhoto(int photoId)
+		{
+			var photo = await iphotoRepository.GetPhotoById(photoId);
+			if (photo == null) return NotFound("Could not find the photo");
+
+			if(photo.PublicId != null)
+			{
+				var result = await photoService.DeletePhotoAsync(photo.PublicId);
+
+				if(result.Result == "ok")
+				{
+					iphotoRepository.RemovePhoto(photo);
+				}
+			}
+			else
+			{
+				iphotoRepository.RemovePhoto(photo);
+
+			}
+			return Ok();
 		}
 	}
 }

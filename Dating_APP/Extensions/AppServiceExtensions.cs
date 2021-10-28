@@ -24,6 +24,7 @@ namespace Dating_APP.Extensions
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<ILikesRepository, LikesRepository>();
 			services.AddScoped<IMessageRepository, MessagesRepository>();
+			services.AddScoped<IPhotoRepository, PhotoRepository>();
 			services.AddAutoMapper(typeof (AutoMapperProfiles).Assembly);
 			services.AddDbContext<DataContext>(options => {
 				options.UseSqlite(config.GetConnectionString("DefaultConnection"));
