@@ -8,6 +8,7 @@ using Dating_APP.Data;
 using Dating_APP.Extensions;
 using Dating_APP.Interfaces;
 using Dating_APP.Services;
+using Dating_APP.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,7 @@ namespace Dating_APP
 			services.AddControllersWithViews();
 			services.AddCors();
 			services.AddIdentityServices(_config);
+			services.AddSignalR();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +65,12 @@ namespace Dating_APP
 				endpoints.MapControllerRoute(
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}");
+				endpoints.MapHub<PresenceHub>("hubs/presence");
+
+				
 			});
+
+			
 		}
 	}
 }
