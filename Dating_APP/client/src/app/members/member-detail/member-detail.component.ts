@@ -7,6 +7,7 @@ import { NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { MessageService } from 'src/app/services/message.service';
 import { Message } from 'src/app/models/message';
+import { PresenceService } from 'src/app/services/presence.service';
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
@@ -19,7 +20,7 @@ activeTab: TabDirective;
   galleryImages: NgxGalleryImage[] ;
   member: Member;
   messages: Message[] = [];
-  constructor(private memberService: MembersService, private route: ActivatedRoute, private messageServicing: MessageService) { }
+  constructor(public presence: PresenceService, private route: ActivatedRoute, private messageServicing: MessageService) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data=> {
