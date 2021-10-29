@@ -52,6 +52,11 @@
           <textarea class="form-control"  [(ngModel)]="member.interests" name="interests" rows="6"></textarea>
           <h4>Location Details: </h4>
           <div class="form-inline">
+            <label for="knownAs">knownAs: </label>
+            <input  [(ngModel)]="member.knownAs" type="text" name="knownAs" class="form-control mx-2" />
+          </div>
+          <hr>
+          <div class="form-inline">
             <label for="city">City: </label>
             <input  [(ngModel)]="member.city" type="text" name="city" class="form-control mx-2" />
             <label for="contry">Country: </label>

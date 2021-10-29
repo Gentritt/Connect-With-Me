@@ -28,8 +28,8 @@ export class ListsComponent implements OnInit {
     })
   } 
 
-  pageChanged(event: any) {
-    this.pageNumber = event.page;
-    this.loadLikes();
-  }
+  // pageChanged(event: any) {
+  //   this.pageNumber = event.page;
+  //   this.loadLikes();
+  // }
 }

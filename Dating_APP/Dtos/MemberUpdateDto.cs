@@ -12,6 +12,7 @@ namespace Dating_APP.Dtos
 		public string Interests { get; set; }
 		public string City { get; set; }
 		public string Contry { get; set; }
+		public string knownAs { get; set; }
 
 	}
 }

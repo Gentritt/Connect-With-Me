@@ -19,6 +19,12 @@
               (click)="loadLikes()">
         Members who like me
       </button>
+      <button class="btn btn-outline-success"
+              btnRadio="likedBy"
+              [(ngModel)]="predicate"
+              (click)="loadLikes()">
+        Online Users
+      </button>
     </div>
   </div>
 

@@ -20,7 +20,7 @@ namespace Dating_APP.Data.Repositories
 		}
 		public async Task<UserLike> GetUserLike(int sourceUserId, int likedUserId)
 		{
-			return await _context.Likes.FindAsync(sourceUserId, likedUserId);
+			return await _context.Likes.FindAsync(sourceUserId, likedUserId); //finds the liked user
 		}
 
 		public async Task<IEnumerable<LikeDto>> GetUserLikes(string predicate,int userId)

@@ -31,15 +31,15 @@ namespace Dating_APP.Controllers.API
 			var userId = int.Parse( HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 			var sourceUserId = userId;
 
-			var likedUser = await _userRepository.GetUserByUsernameAsync(username);
+			var likedUser = await _userRepository.GetUserByUsernameAsync(username);// user that i liked
 
-			var sourceUser = await _likesRepository.GetUsersWithLikes(sourceUserId);
+			var sourceUser = await _likesRepository.GetUsersWithLikes(sourceUserId); // user that liked the {likedusr}
 
 			if (likedUser == null) return NotFound();
 
 			if (sourceUser.UserName == username) return BadRequest("You cant like yourself! :P ");
 
-			var userLike = await _likesRepository.GetUserLike(sourceUserId, likedUser.Id);
+			var userLike = await _likesRepository.GetUserLike(sourceUserId, likedUser.Id);// checks if the user is already liked by the other user
 
 			if (userLike != null) return BadRequest("You already liked this user");
 
