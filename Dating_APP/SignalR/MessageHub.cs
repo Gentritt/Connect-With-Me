@@ -16,12 +16,17 @@ namespace Dating_APP.SignalR
 		private readonly IMessageRepository messageRepository;
 		private readonly IMapper mapper;
 		private readonly IUserRepository userRepository;
+		private readonly IHubContext<PresenceHub> presenceHub;
+		private readonly PresenceTracker presenceTracker;
 
-		public MessageHub(IMessageRepository messageRepository, IMapper mapper,  IUserRepository userRepository)
+		public MessageHub(IMessageRepository messageRepository, IMapper mapper,  IUserRepository userRepository,
+			IHubContext<PresenceHub> presenceHub, PresenceTracker presenceTracker)
 		{
 			this.messageRepository = messageRepository;
 			this.mapper = mapper;
 			this.userRepository = userRepository;
+			this.presenceHub = presenceHub;
+			this.presenceTracker = presenceTracker;
 		}
 
 		public override async Task OnConnectedAsync()
@@ -64,20 +69,30 @@ namespace Dating_APP.SignalR
 				RecipientUsername = recipient.UserName,
 				Content = createMessageDto.Content
 			};
-			var groupName = GetGroupName(sender.UserName, recipient.UserName);
+			var groupName = GetGroupName(sender.UserName, recipient.UserName); // create a group for users in the same group
 
 			var group = await messageRepository.GetMessageGroup(groupName);
 
-			if(group.Connections.Any(x=> x.Username == recipient.UserName))
+			if(group.Connections.Any(x=> x.Username == recipient.UserName)) //check if the user is in the same group
 			{
 				message.DateRead = DateTime.UtcNow;
+			}
+
+			else
+			{
+				var connections = await presenceTracker.GetConnectionsForUser(recipient.UserName);
+				if(connections != null)
+				{
+					await presenceHub.Clients.Clients(connections).SendAsync("NewMessageRecevied", 
+						new {username = sender.UserName, knownAs = sender.KnownAs }); // if the user is onlin but not connected to the same group
+				}
 			}
 			messageRepository.AddMessage(message);
 
 			if (await messageRepository.SaveAllAsync())
 			{
 				
-				await Clients.Group(groupName).SendAsync("NewMessage", mapper.Map<MessageDto>(message));
+				await Clients.Group(groupName).SendAsync("NewMessage", mapper.Map<MessageDto>(message)); 
 			}
 
 			
