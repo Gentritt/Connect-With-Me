@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,8 @@ export class PresenceService {
     this.hubConnection.on('UserIsOffline', username=> {
       this.toastr.warning(username +' has disconnected')
     })
+
+
 
     this.hubConnection.on('GetOnlineUsers',(usernames: string[]) => {
             this.onlineUsersSource.next(usernames);

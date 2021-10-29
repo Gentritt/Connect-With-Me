@@ -66,6 +66,7 @@ namespace Dating_APP
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 				endpoints.MapHub<PresenceHub>("hubs/presence");
+				endpoints.MapHub<MessageHub>("hubs/message");
 
 				
 			});
