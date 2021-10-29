@@ -19,22 +19,22 @@ namespace Dating_APP.SignalR
 		}
 		public override async Task OnConnectedAsync()
 		{
-			 await tracker.UserConnected(Context.User.GetUsername(), Context.ConnectionId); // getting a user when connects
+			var isOnline = await tracker.UserConnected(Context.User.GetUsername(), Context.ConnectionId); // getting a user when connects
+			if(isOnline)
+				await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUsername());
 
-			await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUsername());
 
 			var currentUsers = await tracker.GetOnlineUsers();
-			await Clients.All.SendAsync("GetOnlineUsers", currentUsers); // sent to everyne when someone connects
+			await Clients.Caller.SendAsync("GetOnlineUsers", currentUsers); // sent to everyne when someone connects
 		}
 
 		public override async Task OnDisconnectedAsync(Exception exception)
 		{
 
-			await tracker.UserDisconnected(Context.User.GetUsername(), Context.ConnectionId);
-			await Clients.Others.SendAsync("UserIsOffline", Context.User.GetUsername());
-			var currentUsers = await tracker.GetOnlineUsers();
+			var isOffline = await tracker.UserDisconnected(Context.User.GetUsername(), Context.ConnectionId);
+			if(isOffline)
+				await Clients.Others.SendAsync("UserIsOffline", Context.User.GetUsername());
 
-			await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
 			await base.OnDisconnectedAsync(exception);
 		}
 

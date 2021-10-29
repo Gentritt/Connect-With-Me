@@ -16,7 +16,6 @@
       <li *appHasRole='["Admin", "Moderator"]' class="nav-item">
         <a class="nav-link" routerLink="/admin" routerLinkActive='active'>Admin</a>
       </li>
-
     </ul>
 
     <div class="dropdown" *ngIf="(accountservice.currentUser$ | async) as user" dropdown>

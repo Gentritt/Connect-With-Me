@@ -10,7 +10,7 @@ namespace Dating_APP.SignalR
 		private static readonly Dictionary<string, List<string>> OnlineUsers =  
 			new Dictionary<string, List<string>>();
 
-		public Task UserConnected(string username, string connectionId)
+		public Task<bool> UserConnected(string username, string connectionId)
 		{
 			bool isOnline = false;
 			lock (OnlineUsers)
@@ -30,7 +30,7 @@ namespace Dating_APP.SignalR
 
 		}
 
-		public Task UserDisconnected(string username,string connectionId)
+		public Task<bool> UserDisconnected(string username,string connectionId)
 		{
 			bool isOffline = false;
 
@@ -45,7 +45,7 @@ namespace Dating_APP.SignalR
 					isOffline = true;
 				}
 			}
-			return Task.CompletedTask;
+			return Task.FromResult(isOffline);
 		}
 
 

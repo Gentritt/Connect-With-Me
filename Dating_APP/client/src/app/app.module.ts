@@ -41,6 +41,7 @@ import { UserManagementComponent } from './admin/user-management/user-management
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { RolesModalComponent } from './_modals/roles-modal/roles-modal.component';
+import { Home2Component } from './home2/home2.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,6 +66,7 @@ import { RolesModalComponent } from './_modals/roles-modal/roles-modal.component
     UserManagementComponent,
     PhotoManagementComponent,
     RolesModalComponent,
+    Home2Component,
 
 
   ],

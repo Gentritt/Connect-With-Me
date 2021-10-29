@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { User } from '../models/user';
+import { AccountService } from '../services/account.service';
 
 @Component({
   selector: 'app-home',
@@ -8,8 +11,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
+  user: User;
     registerMode = false;
-    constructor() { }
+    constructor(public accountService:AccountService ) { 
+      this.accountService.currentUser$.pipe(take(1)).subscribe(user=> this.user);
+
+    }
 
     ngOnInit(): void {
   }
