@@ -16,15 +16,13 @@ namespace Dating_APP.Controllers.API
 	public class AdminController : BaseApiController
 	{
 		private readonly UserManager<AppUser> userManager;
-		private readonly IPhotoRepository iphotoRepository;
-		private readonly IUserRepository iuserRepository;
+		private readonly IUnitOfWork unitOfWork;
 		private readonly IPhotoService photoService;
 
-		public AdminController(UserManager<AppUser> userManager, IPhotoRepository photoRepository, IUserRepository userRepository, IPhotoService photoService)
+		public AdminController(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, IPhotoService photoService)
 		{
 			this.userManager = userManager;
-			this.iphotoRepository = photoRepository;
-			this.iuserRepository = userRepository;
+			this.unitOfWork = unitOfWork;
 			this.photoService = photoService;
 		}
 
@@ -74,7 +72,7 @@ namespace Dating_APP.Controllers.API
 
 		public async Task<ActionResult> GetPhotosForModeration()
 		{
-			var photos = await iphotoRepository.GetUnapprovedPhoto();
+			var photos = await unitOfWork.photoRepository.GetUnapprovedPhoto();
 			return Ok(photos);
 		}
 
@@ -83,13 +81,13 @@ namespace Dating_APP.Controllers.API
 
 		public async Task<ActionResult> ApprovePhoto(int PhotoId)
 		{
-			var photo = await iphotoRepository.GetPhotoById(PhotoId);
+			var photo = await unitOfWork.photoRepository.GetPhotoById(PhotoId);
 
 			if (photo == null) return NotFound("Could not find photo");
 
 			photo.IsApproved = true;
 
-			var user = await iuserRepository.GetUserByPhotoId(PhotoId);
+			var user = await unitOfWork.userRepository.GetUserByPhotoId(PhotoId);
 			if (!user.Photos.Any(x => x.IsMain)) photo.IsMain = true;
 
 			return Ok();
@@ -99,7 +97,7 @@ namespace Dating_APP.Controllers.API
 		[HttpPost("reject-photo/{photoId}")]
 		public async Task<ActionResult> RejectPhoto(int photoId)
 		{
-			var photo = await iphotoRepository.GetPhotoById(photoId);
+			var photo = await unitOfWork.photoRepository.GetPhotoById(photoId);
 			if (photo == null) return NotFound("Could not find the photo");
 
 			if(photo.PublicId != null)
@@ -108,12 +106,12 @@ namespace Dating_APP.Controllers.API
 
 				if(result.Result == "ok")
 				{
-					iphotoRepository.RemovePhoto(photo);
+					unitOfWork.photoRepository.RemovePhoto(photo);
 				}
 			}
 			else
 			{
-				iphotoRepository.RemovePhoto(photo);
+				unitOfWork.photoRepository.RemovePhoto(photo);
 
 			}
 			return Ok();

@@ -42,6 +42,7 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { RolesModalComponent } from './_modals/roles-modal/roles-modal.component';
 import { Home2Component } from './home2/home2.component';
+import { ConfirmDialogComponent } from './_modals/confirm-dialog/confirm-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,6 +68,7 @@ import { Home2Component } from './home2/home2.component';
     PhotoManagementComponent,
     RolesModalComponent,
     Home2Component,
+    ConfirmDialogComponent,
 
 
   ],

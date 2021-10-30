@@ -3,6 +3,7 @@ import { Message } from '../models/message';
 import { MessageParams } from '../models/messageParams';
 import { Pagination } from '../models/pagination';
 import { User } from '../models/user';
+import { ConfirmService } from '../services/confirm.service';
 import { MessageService } from '../services/message.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class MessagesComponent implements OnInit {
   messageParams!: MessageParams
   user: User;
   container = 'Inbox';
-  constructor(private messageService: MessageService) { }
+  constructor(private messageService: MessageService, private confirmService: ConfirmService) { }
 
   ngOnInit(): void {
     this.loadMessages();
@@ -31,8 +32,13 @@ export class MessagesComponent implements OnInit {
   }
   deleteMessage(id:number){
 
-    this.messageService.deleteMessage(id).subscribe(()=>{
-      this.messages.splice(this.messages.findIndex(m=> m!.id == id),1);
+  
+    this.confirmService.confirm('Are you sure you want to delete this message? ', 'Disclaimer: This message can still be seen by the recepient, unless he deletes it!').subscribe((result: any)=> {
+      if(result){
+        this.messageService.deleteMessage(id).subscribe(()=>{
+          this.messages.splice(this.messages.findIndex(m=> m!.id == id),1);
+        });
+      }
     })
   }
   // pageChanged(event: any){

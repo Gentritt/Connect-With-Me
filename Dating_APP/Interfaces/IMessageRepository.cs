@@ -20,7 +20,6 @@ namespace Dating_APP.Interfaces
 		Task<Message> GetMessage(int id);
 		Task<IEnumerable<MessageDto>> GetMessagesForUser(MessageParams messageParams);
 		Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientUserName);
-		Task<bool> SaveAllAsync();
 		Task<IEnumerable<MessageDto>> GetMessagesForUserTest(string container,string username);
 
 

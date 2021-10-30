@@ -16,12 +16,10 @@ namespace Dating_APP.Controllers.API
 	//*/[Authorize]*/
 	public class LikesController : BaseApiController
 	{
-		private readonly IUserRepository _userRepository;
-		private readonly ILikesRepository _likesRepository;
-		public LikesController(IUserRepository userRepository, ILikesRepository likesRepository)
+		private readonly IUnitOfWork unitOfWork;
+		public LikesController(IUnitOfWork unitOfWork )
 		{
-			_userRepository = userRepository;
-			_likesRepository = likesRepository;
+			this.unitOfWork = unitOfWork;
 		}
 
 		[HttpPost("{username}")]
@@ -31,15 +29,15 @@ namespace Dating_APP.Controllers.API
 			var userId = int.Parse( HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 			var sourceUserId = userId;
 
-			var likedUser = await _userRepository.GetUserByUsernameAsync(username);// user that i liked
+			var likedUser = await unitOfWork.userRepository.GetUserByUsernameAsync(username);// user that i liked
 
-			var sourceUser = await _likesRepository.GetUsersWithLikes(sourceUserId); // user that liked the {likedusr}
+			var sourceUser = await unitOfWork.likesRepository.GetUsersWithLikes(sourceUserId); // user that liked the {likedusr}
 
 			if (likedUser == null) return NotFound();
 
 			if (sourceUser.UserName == username) return BadRequest("You cant like yourself! :P ");
 
-			var userLike = await _likesRepository.GetUserLike(sourceUserId, likedUser.Id);// checks if the user is already liked by the other user
+			var userLike = await unitOfWork.likesRepository.GetUserLike(sourceUserId, likedUser.Id);// checks if the user is already liked by the other user
 
 			if (userLike != null) return BadRequest("You already liked this user");
 
@@ -50,7 +48,7 @@ namespace Dating_APP.Controllers.API
 			};
 
 			sourceUser.LikedUsers.Add(userLike);
-			if (await _userRepository.SaveAllAsync()) return Ok();
+			if (await unitOfWork.userRepository.SaveAllAsync()) return Ok();
 
 			return BadRequest("Failed to like user");
 
@@ -62,7 +60,7 @@ namespace Dating_APP.Controllers.API
 		public async Task<ActionResult<IEnumerable<LikeDto>>> GetUserLikes(string predicate)
 		{
 		
-			var users =  await _likesRepository.GetUserLikes(predicate,User.GetUserId());
+			var users =  await unitOfWork.likesRepository.GetUserLikes(predicate,User.GetUserId());
 			return Ok(users);
 		} 
 
