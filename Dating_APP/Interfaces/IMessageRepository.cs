@@ -14,6 +14,7 @@ namespace Dating_APP.Interfaces
 		void RemoveConnection(Connection connection);
 		Task<Connection> GetConnection(string connectionID);
 		Task<Group> GetMessageGroup(string groupName);
+		Task<Group> GetGroupForConnection(string connectionId);
 		void AddMessage(Message message);
 		void DeleteMessage(Message message);
 		Task<Message> GetMessage(int id);
@@ -21,6 +22,7 @@ namespace Dating_APP.Interfaces
 		Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientUserName);
 		Task<bool> SaveAllAsync();
 		Task<IEnumerable<MessageDto>> GetMessagesForUserTest(string container,string username);
+
 
 	}
 }

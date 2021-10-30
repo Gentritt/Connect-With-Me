@@ -43,3 +43,10 @@
     animation: fa-blink 1.4 linear infinite;
     color: rgb(1,189,42)
 }
+.fa-heart {
+    color: #ccc;
+}
+
+.fa-heart.active {
+    color: deeppink;
+}

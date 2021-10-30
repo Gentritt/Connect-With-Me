@@ -6,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Message } from '../models/message';
 import { User } from '../models/user';
+import {Group} from '../models/group';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ export class MessageService {
     .build()
 
     this.hubConnection.start().catch(error=> console.log(error));
+
     this.hubConnection.on('ReceiveMessageThread', messages=> {
       this.messageThreadSource.next(messages);
     })
@@ -37,6 +39,20 @@ export class MessageService {
       this.messageThread$.pipe(take(1)).subscribe(messages=> {
         this.messageThreadSource.next([...messages, message]);
       })
+    })
+
+    this.hubConnection.on('UpdatedGroup', (group: Group)=> {
+      if(group.connections.some(x => x.username === otherUsername)){
+        this.messageThread$.pipe(take(1)).subscribe(messages=> {
+          messages.forEach(message=>{
+            if(!message.dateRead){
+              message.dateRead === new Date(Date.now());
+            }
+          })
+          this.messageThreadSource.next([...messages]);
+
+        })
+      }
     })
   }
 

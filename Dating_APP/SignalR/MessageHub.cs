@@ -35,17 +35,18 @@ namespace Dating_APP.SignalR
 
 			var otherUser = httpContext.Request.Query["user"].ToString();
 			var groupName = GetGroupName(Context.User.GetUsername(),otherUser);
-
 			await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-			await AddToGroup(Context, groupName);
+			var group = await AddToGroup(groupName);
+			await Clients.Group(groupName).SendAsync("UpdatedGroup", group);
 
 			var messages = await messageRepository.GetMessageThread(Context.User.GetUsername(), otherUser);
-			await Clients.Group(groupName).SendAsync("ReceiveMessageThread", messages);
+			await Clients.Caller.SendAsync("ReceiveMessageThread", messages);
 		}
 
 		public override async Task OnDisconnectedAsync(Exception exception)
 		{
-			await RemoveFromMessageGroup(Context.ConnectionId);
+			var group = await RemoveFromMessageGroup();
+			await Clients.Group(group.Name).SendAsync("UpdatedGroup", group);
 			await base.OnDisconnectedAsync(exception);
 		}
 
@@ -98,7 +99,7 @@ namespace Dating_APP.SignalR
 			
 		}
 
-		public async Task<bool> AddToGroup(HubCallerContext context, string groupName)
+		public async Task<Group> AddToGroup(string groupName)
 		{
 			var group = await messageRepository.GetMessageGroup(groupName);
 
@@ -109,15 +110,22 @@ namespace Dating_APP.SignalR
 				messageRepository.AddGroup(group);
 			}
 			group.Connections.Add(connction);
-			return await messageRepository.SaveAllAsync();
+
+			if (await messageRepository.SaveAllAsync()) return group;
+			throw new HubException("Failed to join group");
 		}
 
-		private async Task RemoveFromMessageGroup(string connectionID)
+		private async Task<Group> RemoveFromMessageGroup()
 		{
-			var connection = await messageRepository.GetConnection(connectionID);
+			var group = await messageRepository.GetGroupForConnection(Context.ConnectionId);
+
+			var connection = group.Connections.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
+
 			messageRepository.RemoveConnection(connection);
 
-			await messageRepository.SaveAllAsync();
+			if(await messageRepository.SaveAllAsync()) return group;
+
+			throw new HubException("Failed to remove from group");
 		}
 		private string GetGroupName(string caller, string other)
 		{

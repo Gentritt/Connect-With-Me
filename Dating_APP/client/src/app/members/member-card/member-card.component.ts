@@ -11,15 +11,27 @@ import { MembersService } from '../../services/members.service';
 })
 export class MemberCardComponent implements OnInit {
   @Input() member: Member | undefined;
-  constructor(private memberService: MembersService, private toastr: ToastrService, public presence: PresenceService) { }
+  isActive: boolean;
+  constructor(public memberService: MembersService, private toastr: ToastrService, public presence: PresenceService
+    
+    ) { }
 
   ngOnInit(): void {
   }
 
   addLike(member: Member) {
     this.memberService.addLike(member.username).subscribe(() => {
-      this.toastr.success("You have liked " + member.knownAs);
+    this.toastr.success("You have liked " + member.knownAs);
+    
+    if(member!== null){
+      this.toastr.error("You like this!");
+    }
+       
     })
+  }
+
+  onClick() {
+    this.isActive = !this.isActive;
   }
 
 }
