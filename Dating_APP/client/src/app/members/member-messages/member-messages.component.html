@@ -1,5 +1,9 @@
 <div class="card">
-    <div class="card-body">
+    <div class="card-body"
+    #scrollMe
+        style="overflow: scroll; height: 500px;"
+        [scrollTop]="scrollMe.scrollHeight"
+    >
         <div *ngIf="(messageService.messageThread$ | async)?.length === 0">
             No Messages yet :/
         </div>
