@@ -29,19 +29,25 @@
     </div>
 
 
-    <form *ngIf="(accountservice.currentUser$ | async) === null" #loginForm="ngForm"
+    <form  novalidate *ngIf="(accountservice.currentUser$ | async) === null" #loginForm="ngForm"
           class="form-inline mt-2 mt-md-0"
           (ngSubmit)="login()"
           autocomplete="off">
-      <input name="username"
+          
+      <input 
+             name="username"
              [(ngModel)]="model.username"
              class="form-control mr-sm-2"
              type="search"
-             placeholder="Username">
+             placeholder="Username"
+             >
+          
+  
              
       <input name="password"
              [(ngModel)]="model.password"
              class="form-control mr-sm-2"
+             required
              type="password"
              placeholder="Password">
              
